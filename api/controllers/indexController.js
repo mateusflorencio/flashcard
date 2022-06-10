@@ -15,6 +15,22 @@ const indexController = {
             })
         }
     },
+    findId: async (req, res) => {
+        let {
+            id
+        } = req.params
+        try {
+            let card = await Card.findById(id)
+            if (card) {
+                res.json(card).status(200)
+            }
+            res.status(404).json({
+                message: "id not found"
+            })
+        } catch (err) {
+            res.status(500).json(NativeError)
+        }
+    },
     save: async (req, res) => {
         try {
             let {
