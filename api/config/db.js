@@ -6,6 +6,7 @@ const mongoUrl = process.env.MONGO_URL;
 mongoose.Promise = global.Promise;
 
 mongoose.connect(mongoUrl, (err) => {
+    console.log(mongoUrl);
     if (!err) {
         console.log('MongoDB Connection Succeeded.')
     } else {
