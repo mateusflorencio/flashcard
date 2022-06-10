@@ -28,7 +28,7 @@ const indexController = {
                 message: "id not found"
             })
         } catch (err) {
-            res.status(500).json(NativeError)
+            res.status(500).json(err)
         }
     },
     save: async (req, res) => {

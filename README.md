@@ -1,4 +1,4 @@
-# Project FlashCard Api 🔡\*\*\*\*
+# Project FlashCard Api 🔡
 
 ## Database
 
