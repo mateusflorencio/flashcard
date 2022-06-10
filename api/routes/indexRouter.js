@@ -8,6 +8,7 @@ const indexController = require('../controllers/indexController')
 router.get('/', indexController.index)
 router.get('/flashcards', indexController.getAll)
 router.post('/flashcards', indexController.save)
+router.delete('/flashcards/:id', indexController.delete)
 
 
 module.exports = router;

@@ -15,31 +15,40 @@ const indexController = {
             })
         }
     },
-    save: async (_req, res) => {
+    save: async (req, res) => {
         try {
-            let world = 'Hi'
-            let translation = 'oi'
-            let description = '  para saudar'
-
+            let {
+                world,
+                translation,
+                description
+            } = req.body
 
             let card = await Card.create({
                 world,
                 translation,
                 description
             })
-
             res.json(card).status(201)
-
-
         } catch (error) {
             res.status(400).json({
                 error: `${error}`
             })
         }
-
-
+    },
+    delete: async (req, res) => {
+        try {
+            let {
+                id
+            } = req.params
+            console.log(id);
+            await Card.findByIdAndDelete(id);
+            res.status(204).json({
+                message: "ok"
+            })
+        } catch (error) {
+            res.status(500).json(error)
+        }
     }
 }
-
 
 module.exports = indexController
