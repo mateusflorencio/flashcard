@@ -1,4 +1,11 @@
-const Card = require('../models/Card')
+const Card = require('../models/card');
+const {
+    body,
+    param,
+    validationResult
+} = require('express-validator');
+
+
 const indexController = {
     index: (_req, res) => {
         res.status(200).send({
@@ -8,47 +15,53 @@ const indexController = {
     getAll: async (_req, res) => {
         try {
             let obj = await Card.find()
-            res.status(200).json(obj)
+            res.status(200).json(obj);
         } catch (error) {
             res.status(404).json({
                 error: `${error}`
-            })
+            });
         }
     },
     findId: async (req, res) => {
-        let {
-            id
-        } = req.params
+        let id = req.params.id;
+        param('id').trim().notEmpty();
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.status(422).json({
+                errors: errors.array()
+            });
+        }
         try {
-            let card = await Card.findById(id)
-            if (card) {
-                res.json(card).status(200)
+            let card = await Card.findById(id);
+            if (!card) {
+                res.status(404).json({
+                    message: "id not found"
+                });
             }
-            res.status(404).json({
-                message: "id not found"
-            })
+            res.status(200).json(card);
         } catch (err) {
-            res.status(500).json(err)
+            return res.status(500).json({
+                err: `${err}`
+            });
         }
     },
     save: async (req, res) => {
+        let {
+            world,
+            translation,
+            description
+        } = req.body
         try {
-            let {
-                world,
-                translation,
-                description
-            } = req.body
-
             let card = await Card.create({
                 world,
                 translation,
                 description
-            })
-            res.json(card).status(201)
+            });
+            return res.status(201).json(card);
         } catch (error) {
             res.status(400).json({
                 error: `${error}`
-            })
+            });
         }
     },
     delete: async (req, res) => {
@@ -56,7 +69,8 @@ const indexController = {
             let {
                 id
             } = req.params
-            console.log(id);
+            param('id').trim().notEmpty()
+
             await Card.findByIdAndDelete(id);
             res.status(204).json({
                 message: "ok"
